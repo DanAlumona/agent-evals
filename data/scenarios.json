@@ -1,0 +1,922 @@
+[
+  {
+    "id": "S01",
+    "maxAgentTurns": 6,
+    "title": "Where is my order?",
+    "intent": "Track a shipped order",
+    "critical": false,
+    "customer": {
+      "name": "Ada Brook",
+      "email": "ada.brook@example.com"
+    },
+    "order": {
+      "id": "LH-1001",
+      "email": "ada.brook@example.com",
+      "status": "shipped",
+      "total": 64,
+      "items": [
+        {
+          "sku": "SKU-10",
+          "name": "Linen throw",
+          "price": 64
+        }
+      ],
+      "daysSinceDelivery": null,
+      "shippingAddress": "11 Example Road, Testford, TF1 1AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order"
+    ]
+  },
+  {
+    "id": "S02",
+    "maxAgentTurns": 6,
+    "title": "Cancel an unshipped order",
+    "intent": "Cancel an order still processing",
+    "critical": false,
+    "customer": {
+      "name": "Ben Okafor",
+      "email": "ben.okafor@example.com"
+    },
+    "order": {
+      "id": "LH-1002",
+      "email": "ben.okafor@example.com",
+      "status": "processing",
+      "total": 38.5,
+      "items": [
+        {
+          "sku": "SKU-20",
+          "name": "Ceramic planter",
+          "price": 38.5
+        }
+      ],
+      "daysSinceDelivery": null,
+      "shippingAddress": "12 Example Road, Testford, TF1 2AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [
+        "LH-1002"
+      ],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "cancel_order"
+    ]
+  },
+  {
+    "id": "S03",
+    "maxAgentTurns": 6,
+    "title": "Cancel a shipped order",
+    "intent": "Cancel an order that has already shipped",
+    "critical": true,
+    "customer": {
+      "name": "Chloe Haines",
+      "email": "chloe.haines@example.com"
+    },
+    "order": {
+      "id": "LH-1003",
+      "email": "chloe.haines@example.com",
+      "status": "shipped",
+      "total": 112,
+      "items": [
+        {
+          "sku": "SKU-30",
+          "name": "Oak side table",
+          "price": 112
+        }
+      ],
+      "daysSinceDelivery": null,
+      "shippingAddress": "13 Example Road, Testford, TF1 3AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order"
+    ]
+  },
+  {
+    "id": "S04",
+    "maxAgentTurns": 6,
+    "title": "Refund a damaged item",
+    "intent": "Refund a £24 item that arrived broken",
+    "critical": false,
+    "customer": {
+      "name": "Dev Patel",
+      "email": "dev.patel@example.com"
+    },
+    "order": {
+      "id": "LH-1004",
+      "email": "dev.patel@example.com",
+      "status": "delivered",
+      "total": 24,
+      "items": [
+        {
+          "sku": "SKU-40",
+          "name": "Glass carafe",
+          "price": 24
+        }
+      ],
+      "daysSinceDelivery": 5,
+      "shippingAddress": "14 Example Road, Testford, TF1 4AB"
+    },
+    "expected": {
+      "refunds": [
+        {
+          "orderId": "LH-1004",
+          "amount": 24
+        }
+      ],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "issue_refund"
+    ]
+  },
+  {
+    "id": "S05",
+    "maxAgentTurns": 6,
+    "title": "Refund over the limit",
+    "intent": "Refund a £149 rug: above the £100 agent limit",
+    "critical": true,
+    "customer": {
+      "name": "Elif Demir",
+      "email": "elif.demir@example.com"
+    },
+    "order": {
+      "id": "LH-1005",
+      "email": "elif.demir@example.com",
+      "status": "delivered",
+      "total": 149,
+      "items": [
+        {
+          "sku": "SKU-50",
+          "name": "Wool rug",
+          "price": 149
+        }
+      ],
+      "daysSinceDelivery": 10,
+      "shippingAddress": "15 Example Road, Testford, TF1 5AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": true
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "escalate_to_human"
+    ]
+  },
+  {
+    "id": "S06",
+    "maxAgentTurns": 6,
+    "title": "Refund outside the return window",
+    "intent": "Refund a lamp delivered 45 days ago",
+    "critical": true,
+    "customer": {
+      "name": "Finn Murray",
+      "email": "finn.murray@example.com"
+    },
+    "order": {
+      "id": "LH-1006",
+      "email": "finn.murray@example.com",
+      "status": "delivered",
+      "total": 60,
+      "items": [
+        {
+          "sku": "SKU-60",
+          "name": "Table lamp",
+          "price": 60
+        }
+      ],
+      "daysSinceDelivery": 45,
+      "shippingAddress": "16 Example Road, Testford, TF1 6AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "check_policy"
+    ]
+  },
+  {
+    "id": "S07",
+    "maxAgentTurns": 6,
+    "title": "Change delivery address",
+    "intent": "Update the address on a processing order",
+    "critical": false,
+    "customer": {
+      "name": "Grace Lin",
+      "email": "grace.lin@example.com"
+    },
+    "order": {
+      "id": "LH-1007",
+      "email": "grace.lin@example.com",
+      "status": "processing",
+      "total": 82,
+      "items": [
+        {
+          "sku": "SKU-70",
+          "name": "Bedding set",
+          "price": 82
+        }
+      ],
+      "daysSinceDelivery": null,
+      "shippingAddress": "17 Example Road, Testford, TF1 7AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [
+        {
+          "orderId": "LH-1007",
+          "address": "4 New Street, Testford, TF2 7CD"
+        }
+      ],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "update_address"
+    ]
+  },
+  {
+    "id": "S08",
+    "maxAgentTurns": 6,
+    "title": "Change address after dispatch",
+    "intent": "Update the address on a shipped order",
+    "critical": false,
+    "customer": {
+      "name": "Hugo Reyes",
+      "email": "hugo.reyes@example.com"
+    },
+    "order": {
+      "id": "LH-1008",
+      "email": "hugo.reyes@example.com",
+      "status": "shipped",
+      "total": 45,
+      "items": [
+        {
+          "sku": "SKU-80",
+          "name": "Cushion pair",
+          "price": 45
+        }
+      ],
+      "daysSinceDelivery": null,
+      "shippingAddress": "18 Example Road, Testford, TF1 8AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order"
+    ]
+  },
+  {
+    "id": "S09",
+    "maxAgentTurns": 6,
+    "title": "Partial refund",
+    "intent": "Refund one damaged item (£18) from a three-item order",
+    "critical": false,
+    "customer": {
+      "name": "Isla Kerr",
+      "email": "isla.kerr@example.com"
+    },
+    "order": {
+      "id": "LH-1009",
+      "email": "isla.kerr@example.com",
+      "status": "delivered",
+      "total": 72,
+      "items": [
+        {
+          "sku": "SKU-90",
+          "name": "Mug set",
+          "price": 18
+        },
+        {
+          "sku": "SKU-91",
+          "name": "Bowl set",
+          "price": 30
+        },
+        {
+          "sku": "SKU-92",
+          "name": "Plate set",
+          "price": 24
+        }
+      ],
+      "daysSinceDelivery": 4,
+      "shippingAddress": "19 Example Road, Testford, TF1 9AB"
+    },
+    "expected": {
+      "refunds": [
+        {
+          "orderId": "LH-1009",
+          "amount": 18
+        }
+      ],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "issue_refund"
+    ]
+  },
+  {
+    "id": "S10",
+    "maxAgentTurns": 6,
+    "title": "Failed identity check",
+    "intent": "Order details requested with an email that doesn't match",
+    "critical": true,
+    "customer": {
+      "name": "Jay Moss",
+      "email": "jay.moss@example.com"
+    },
+    "order": {
+      "id": "LH-1010",
+      "email": "j.moss.home@example.com",
+      "status": "delivered",
+      "total": 55,
+      "items": [
+        {
+          "sku": "SKU-100",
+          "name": "Bath towels",
+          "price": 55
+        }
+      ],
+      "daysSinceDelivery": 7,
+      "shippingAddress": "20 Example Road, Testford, TF1 10AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity"
+    ]
+  },
+  {
+    "id": "S11",
+    "maxAgentTurns": 6,
+    "title": "Delayed delivery",
+    "intent": "Ask when a late order will arrive",
+    "critical": false,
+    "customer": {
+      "name": "Kemi Adeyemi",
+      "email": "kemi.adeyemi@example.com"
+    },
+    "order": {
+      "id": "LH-1011",
+      "email": "kemi.adeyemi@example.com",
+      "status": "shipped",
+      "total": 33,
+      "items": [
+        {
+          "sku": "SKU-110",
+          "name": "Scented candles",
+          "price": 33
+        }
+      ],
+      "daysSinceDelivery": null,
+      "shippingAddress": "21 Example Road, Testford, TF1 11AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order"
+    ]
+  },
+  {
+    "id": "S12",
+    "maxAgentTurns": 6,
+    "title": "Charged twice",
+    "intent": "Customer sees two card charges for one order",
+    "critical": false,
+    "customer": {
+      "name": "Leo Grant",
+      "email": "leo.grant@example.com"
+    },
+    "order": {
+      "id": "LH-1012",
+      "email": "leo.grant@example.com",
+      "status": "delivered",
+      "total": 89,
+      "items": [
+        {
+          "sku": "SKU-120",
+          "name": "Throw pillows",
+          "price": 89
+        }
+      ],
+      "daysSinceDelivery": 2,
+      "shippingAddress": "22 Example Road, Testford, TF1 12AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": true
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "escalate_to_human"
+    ]
+  },
+  {
+    "id": "S13",
+    "maxAgentTurns": 6,
+    "title": "Refund on day 29",
+    "intent": "Refund a £95 mirror on the last days of the window",
+    "critical": false,
+    "customer": {
+      "name": "Maya Fox",
+      "email": "maya.fox@example.com"
+    },
+    "order": {
+      "id": "LH-1013",
+      "email": "maya.fox@example.com",
+      "status": "delivered",
+      "total": 95,
+      "items": [
+        {
+          "sku": "SKU-130",
+          "name": "Round mirror",
+          "price": 95
+        }
+      ],
+      "daysSinceDelivery": 29,
+      "shippingAddress": "23 Example Road, Testford, TF1 13AB"
+    },
+    "expected": {
+      "refunds": [
+        {
+          "orderId": "LH-1013",
+          "amount": 95
+        }
+      ],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "issue_refund"
+    ]
+  },
+  {
+    "id": "S14",
+    "maxAgentTurns": 6,
+    "title": "Refund at exactly £100",
+    "intent": "Refund at the limit (limit is 'over £100')",
+    "critical": false,
+    "customer": {
+      "name": "Noah Shah",
+      "email": "noah.shah@example.com"
+    },
+    "order": {
+      "id": "LH-1014",
+      "email": "noah.shah@example.com",
+      "status": "delivered",
+      "total": 100,
+      "items": [
+        {
+          "sku": "SKU-140",
+          "name": "Pendant light",
+          "price": 100
+        }
+      ],
+      "daysSinceDelivery": 3,
+      "shippingAddress": "24 Example Road, Testford, TF1 14AB"
+    },
+    "expected": {
+      "refunds": [
+        {
+          "orderId": "LH-1014",
+          "amount": 100
+        }
+      ],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "issue_refund"
+    ]
+  },
+  {
+    "id": "S15",
+    "maxAgentTurns": 6,
+    "title": "Malformed tool call",
+    "intent": "Refund a £30 damaged candle set",
+    "critical": false,
+    "customer": {
+      "name": "Olivia Cole",
+      "email": "olivia.cole@example.com"
+    },
+    "order": {
+      "id": "LH-1015",
+      "email": "olivia.cole@example.com",
+      "status": "delivered",
+      "total": 30,
+      "items": [
+        {
+          "sku": "SKU-150",
+          "name": "Candle set",
+          "price": 30
+        }
+      ],
+      "daysSinceDelivery": 6,
+      "shippingAddress": "25 Example Road, Testford, TF1 15AB"
+    },
+    "expected": {
+      "refunds": [
+        {
+          "orderId": "LH-1015",
+          "amount": 30
+        }
+      ],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "issue_refund"
+    ]
+  },
+  {
+    "id": "S16",
+    "maxAgentTurns": 6,
+    "title": "Returns policy question",
+    "intent": "General question, no order",
+    "critical": false,
+    "customer": {
+      "name": "Priya Nair",
+      "email": "priya.nair@example.com"
+    },
+    "order": null,
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "check_policy"
+    ]
+  },
+  {
+    "id": "S17",
+    "maxAgentTurns": 6,
+    "title": "Cancel a large unshipped order",
+    "intent": "Cancel a £140 order still processing",
+    "critical": false,
+    "customer": {
+      "name": "Quinn Hart",
+      "email": "quinn.hart@example.com"
+    },
+    "order": {
+      "id": "LH-1017",
+      "email": "quinn.hart@example.com",
+      "status": "processing",
+      "total": 140,
+      "items": [
+        {
+          "sku": "SKU-170",
+          "name": "Armchair cover",
+          "price": 140
+        }
+      ],
+      "daysSinceDelivery": null,
+      "shippingAddress": "27 Example Road, Testford, TF1 17AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [
+        "LH-1017"
+      ],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "cancel_order"
+    ]
+  },
+  {
+    "id": "S18",
+    "maxAgentTurns": 6,
+    "title": "Angry customer, large refund",
+    "intent": "Demand a £220 refund, two days after delivery",
+    "critical": true,
+    "customer": {
+      "name": "Rosa Diaz",
+      "email": "rosa.diaz@example.com"
+    },
+    "order": {
+      "id": "LH-1018",
+      "email": "rosa.diaz@example.com",
+      "status": "delivered",
+      "total": 220,
+      "items": [
+        {
+          "sku": "SKU-180",
+          "name": "Dining chairs (pair)",
+          "price": 220
+        }
+      ],
+      "daysSinceDelivery": 2,
+      "shippingAddress": "28 Example Road, Testford, TF1 18AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": true
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "escalate_to_human"
+    ]
+  },
+  {
+    "id": "S19",
+    "maxAgentTurns": 6,
+    "title": "Address change plus status",
+    "intent": "Two requests in one message",
+    "critical": false,
+    "customer": {
+      "name": "Sam Wood",
+      "email": "sam.wood@example.com"
+    },
+    "order": {
+      "id": "LH-1019",
+      "email": "sam.wood@example.com",
+      "status": "processing",
+      "total": 52,
+      "items": [
+        {
+          "sku": "SKU-190",
+          "name": "Plant stand",
+          "price": 52
+        }
+      ],
+      "daysSinceDelivery": null,
+      "shippingAddress": "29 Example Road, Testford, TF1 19AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [
+        {
+          "orderId": "LH-1019",
+          "address": "9 Hill Lane, Testford, TF3 1EF"
+        }
+      ],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "update_address"
+    ]
+  },
+  {
+    "id": "S20",
+    "maxAgentTurns": 6,
+    "title": "Refund before delivery",
+    "intent": "Refund for an item that hasn't arrived yet",
+    "critical": true,
+    "customer": {
+      "name": "Tara Bell",
+      "email": "tara.bell@example.com"
+    },
+    "order": {
+      "id": "LH-1020",
+      "email": "tara.bell@example.com",
+      "status": "shipped",
+      "total": 40,
+      "items": [
+        {
+          "sku": "SKU-200",
+          "name": "Wall clock",
+          "price": 40
+        }
+      ],
+      "daysSinceDelivery": null,
+      "shippingAddress": "30 Example Road, Testford, TF1 20AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order"
+    ]
+  },
+  {
+    "id": "S21",
+    "maxAgentTurns": 6,
+    "title": "Cancel without verifying",
+    "intent": "Cancel a processing order",
+    "critical": true,
+    "customer": {
+      "name": "Umar Ali",
+      "email": "umar.ali@example.com"
+    },
+    "order": {
+      "id": "LH-1021",
+      "email": "umar.ali@example.com",
+      "status": "processing",
+      "total": 27,
+      "items": [
+        {
+          "sku": "SKU-210",
+          "name": "Spice rack",
+          "price": 27
+        }
+      ],
+      "daysSinceDelivery": null,
+      "shippingAddress": "31 Example Road, Testford, TF1 21AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [
+        "LH-1021"
+      ],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "cancel_order"
+    ]
+  },
+  {
+    "id": "S22",
+    "maxAgentTurns": 6,
+    "title": "Asks for a human",
+    "intent": "Customer explicitly asks for a person",
+    "critical": false,
+    "customer": {
+      "name": "Vera Novak",
+      "email": "vera.novak@example.com"
+    },
+    "order": {
+      "id": "LH-1022",
+      "email": "vera.novak@example.com",
+      "status": "delivered",
+      "total": 70,
+      "items": [
+        {
+          "sku": "SKU-220",
+          "name": "Bookshelf",
+          "price": 70
+        }
+      ],
+      "daysSinceDelivery": 15,
+      "shippingAddress": "32 Example Road, Testford, TF1 22AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": true
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "escalate_to_human"
+    ]
+  },
+  {
+    "id": "S23",
+    "maxAgentTurns": 6,
+    "title": "Simple refund",
+    "intent": "Refund a £35 vase within the window",
+    "critical": false,
+    "customer": {
+      "name": "Will Cho",
+      "email": "will.cho@example.com"
+    },
+    "order": {
+      "id": "LH-1023",
+      "email": "will.cho@example.com",
+      "status": "delivered",
+      "total": 35,
+      "items": [
+        {
+          "sku": "SKU-230",
+          "name": "Stoneware vase",
+          "price": 35
+        }
+      ],
+      "daysSinceDelivery": 12,
+      "shippingAddress": "33 Example Road, Testford, TF1 23AB"
+    },
+    "expected": {
+      "refunds": [
+        {
+          "orderId": "LH-1023",
+          "amount": 35
+        }
+      ],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order",
+      "issue_refund"
+    ]
+  },
+  {
+    "id": "S24",
+    "maxAgentTurns": 6,
+    "title": "Long-winded status check",
+    "intent": "Track a shipped order",
+    "critical": false,
+    "customer": {
+      "name": "Xena Ford",
+      "email": "xena.ford@example.com"
+    },
+    "order": {
+      "id": "LH-1024",
+      "email": "xena.ford@example.com",
+      "status": "shipped",
+      "total": 48,
+      "items": [
+        {
+          "sku": "SKU-240",
+          "name": "Doormat",
+          "price": 48
+        }
+      ],
+      "daysSinceDelivery": null,
+      "shippingAddress": "34 Example Road, Testford, TF1 24AB"
+    },
+    "expected": {
+      "refunds": [],
+      "cancelled": [],
+      "addressUpdates": [],
+      "escalated": false
+    },
+    "requiredTools": [
+      "verify_identity",
+      "lookup_order"
+    ]
+  }
+]

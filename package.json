@@ -1,0 +1,33 @@
+{
+  "name": "agent-evals",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Deterministic evals for a customer-service AI agent: task success, policy compliance, tool use, and a ship / don't-ship readout.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dataset": "node scripts/build-dataset.ts",
+    "eval": "node src/cli.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.2.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.1.0"
+  }
+}
